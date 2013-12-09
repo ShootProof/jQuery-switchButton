@@ -174,6 +174,23 @@
                     break;
                 }
 
+                case "inside":
+                {
+                    // Don't move anything if labels are already in place
+                    if(this.button_bg.next() !== this.off_label || this.off_label.next() !== this.on_label)
+                    {
+                        // Detach labels form DOM and place them correctly
+                        this.off_label.detach();
+                        this.on_label.detach();
+                        this.off_label.addClass('off-label').insertAfter(this.button);
+                        this.on_label.addClass('on-label').insertBefore(this.button);
+                        this.button_bg.addClass('inside');
+
+                        // Update label classes
+                        this.on_label.addClass(this.options.checked ? "on" : "off").removeClass(this.options.checked ? "off" : "on");
+                        this.off_label.addClass(this.options.checked ? "off" : "on").removeClass(this.options.checked ? "on" : "off");
+                    }
+                }
             }
 
             // Refresh labels texts
@@ -252,6 +269,9 @@
                 this.element.prop("checked", true);
                 this.element.change();
 
+                // to allow for styling
+                this.button_bg.addClass('on').removeClass('off');
+
                 var dLeft = this.options.width - this.options.button_width;
                 newLeft = "+=" + dLeft;
 
@@ -273,6 +293,9 @@
                 this.element.prop("checked", false);
                 this.element.change();
                 newLeft = "-1px";
+
+                // to allow for styling
+                this.button_bg.addClass('off').removeClass('on');
 
                 // Update labels states
                 if(this.options.labels_placement == "both")
